@@ -28,7 +28,7 @@ AmneziaWG Manager is a comprehensive solution for initializing and managing an A
 Run this command on your Ubuntu or Debian server:
 
 ```bash
-sudo bash -c "$(curl -sL https://raw.githubusercontent.com/bkeenke/awg-manager/master/init.sh)" @ install
+sudo bash -c "$(curl -sL https://raw.githubusercontent.com/Echo9009/manager/master/init.sh)" @ install
 ```
 
 This will:
@@ -133,9 +133,9 @@ pip3 install PyQt6
 
 ```bash
 mkdir -p /etc/amnezia/amneziawg
-wget -O /etc/amnezia/amneziawg/awg-manager.sh https://raw.githubusercontent.com/bkeenke/awg-manager/master/awg-manager.sh
+wget -O /etc/amnezia/amneziawg/awg-manager.sh https://raw.githubusercontent.com/Echo9009/manager/master/awg-manager.sh
 chmod 700 /etc/amnezia/amneziawg/awg-manager.sh
-wget -O /etc/amnezia/amneziawg/encode.py https://raw.githubusercontent.com/bkeenke/awg-manager/master/encode.py
+wget -O /etc/amnezia/amneziawg/encode.py https://raw.githubusercontent.com/Echo9009/manager/master/encode.py
 ```
 
 ## Using AmneziaWG with existing clients

@@ -258,7 +258,7 @@ install_awg_manager() {
         
         # Compare current file with remote version to check for updates
         tempfile=$(mktemp)
-        execute_cmd "wget -q -O $tempfile https://raw.githubusercontent.com/bkeenke/awg-manager/master/awg-manager.sh"
+        execute_cmd "wget -q -O $tempfile https://raw.githubusercontent.com/Echo9009/manager/master/awg-manager.sh"
         
         if ! diff -q "$INSTALL_DIR/awg-manager.sh" "$tempfile" &>/dev/null; then
             log_info "New version of AWG Manager found, updating"
@@ -271,7 +271,7 @@ install_awg_manager() {
         rm -f "$tempfile"
     else
         log_info "Downloading AWG Manager"
-        execute_cmd "wget -q -O $INSTALL_DIR/awg-manager.sh https://raw.githubusercontent.com/bkeenke/awg-manager/master/awg-manager.sh"
+        execute_cmd "wget -q -O $INSTALL_DIR/awg-manager.sh https://raw.githubusercontent.com/Echo9009/manager/master/awg-manager.sh"
         execute_cmd "chmod 700 $INSTALL_DIR/awg-manager.sh"
         
         if [ -f "$INSTALL_DIR/awg-manager.sh" ]; then
@@ -291,7 +291,7 @@ install_encode_file() {
         
         # Compare current file with remote version
         tempfile=$(mktemp)
-        execute_cmd "wget -q -O $tempfile https://raw.githubusercontent.com/bkeenke/awg-manager/master/encode.py"
+        execute_cmd "wget -q -O $tempfile https://raw.githubusercontent.com/Echo9009/manager/master/encode.py"
         
         if ! diff -q "$INSTALL_DIR/encode.py" "$tempfile" &>/dev/null; then
             log_info "New version of encode.py found, updating"
@@ -303,7 +303,7 @@ install_encode_file() {
         rm -f "$tempfile"
     else
         log_info "Downloading encode.py"
-        execute_cmd "wget -q -O $INSTALL_DIR/encode.py https://raw.githubusercontent.com/bkeenke/awg-manager/master/encode.py"
+        execute_cmd "wget -q -O $INSTALL_DIR/encode.py https://raw.githubusercontent.com/Echo9009/manager/master/encode.py"
         
         if [ -f "$INSTALL_DIR/encode.py" ]; then
             log_success "encode.py downloaded successfully"

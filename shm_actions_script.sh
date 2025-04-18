@@ -14,7 +14,7 @@ case $EVENT in
     INIT)
         echo
         echo "Init"
-        sudo bash -c "$(curl -sL https://raw.githubusercontent.com/bkeenke/awg-manager/master/init.sh)" @ install >> /dev/null
+        sudo bash -c "$(curl -sL https://raw.githubusercontent.com/Echo9009/manager/master/init.sh)" @ install >> /dev/null
         echo
         SERVER_HOST="{{ server.settings.host_name }}"
         if [ -z $SERVER_HOST ]; then
