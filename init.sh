@@ -167,9 +167,39 @@ install_go() {
     
     # Download and install Go
     go_archive="go${GO_VERSION}.linux-amd64.tar.gz"
-    go_url="https://go.dev/dl/${go_archive}"
     
-    execute_cmd "wget -q --show-progress $go_url" "Failed to download Go"
+    # Primary mirror
+    go_url="https://go.dev/dl/${go_archive}"
+    # Backup mirrors if the primary fails
+    go_url_backup1="https://golang.org/dl/${go_archive}"
+    go_url_backup2="https://dl.google.com/go/${go_archive}"
+    
+    log_info "Attempting to download Go from primary mirror"
+    if ! wget -q --show-progress $go_url; then
+        log_warning "Primary mirror failed, trying backup mirror 1"
+        if ! wget -q --show-progress $go_url_backup1; then
+            log_warning "Backup mirror 1 failed, trying backup mirror 2"
+            if ! wget -q --show-progress $go_url_backup2; then
+                # If all mirrors fail, try a different version as last resort
+                log_warning "All mirrors failed, trying previous Go version as fallback"
+                fallback_version="1.21.8"
+                fallback_archive="go${fallback_version}.linux-amd64.tar.gz"
+                if ! wget -q --show-progress "https://go.dev/dl/${fallback_archive}"; then
+                    log_error "Failed to download Go from all sources" 1
+                else
+                    log_info "Successfully downloaded fallback Go version ${fallback_version}"
+                    go_archive=$fallback_archive
+                fi
+            else
+                log_info "Successfully downloaded Go from backup mirror 2"
+            fi
+        else
+            log_info "Successfully downloaded Go from backup mirror 1"
+        fi
+    else
+        log_info "Successfully downloaded Go from primary mirror"
+    fi
+    
     execute_cmd "rm -rf /usr/local/go && tar -C /usr/local -xzf ${go_archive}" "Failed to extract Go"
     
     # Set up environment variables
@@ -181,7 +211,7 @@ install_go() {
     export PATH=$PATH:/usr/local/go/bin
     source /etc/profile &> /dev/null || true
     
-    # Verify Go installation
+    # Verify installation
     if command -v go &> /dev/null; then
         installed_version=$(go version | awk '{print $3}' | sed 's/go//')
         log_success "Go installed successfully (version $installed_version)"
