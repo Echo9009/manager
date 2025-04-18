@@ -192,10 +192,23 @@ install_amneziawg_go() {
     # Clone repository
     execute_cmd "rm -rf /opt/amnezia-go && mkdir -p /opt/amnezia-go"
     execute_cmd "git clone --depth=1 https://github.com/amnezia-vpn/amneziawg-go.git /opt/amnezia-go"
-    execute_cmd "cd /opt/amnezia-go"
     
-    # Build and install
-    execute_cmd "make" "Failed to build AmneziaWG Go"
+    # Fix Go version in go.mod if needed
+    execute_cmd "cd /opt/amnezia-go && sed -i 's/go 1.24/go 1.22/g' go.mod" "Failed to update Go version requirement" true
+    
+    # Set environment variables for Go build
+    export GO111MODULE=on
+    export GOFLAGS="-mod=mod"
+    
+    # Build with specific settings
+    log_info "Building AmneziaWG Go with current Go version"
+    if ! (cd /opt/amnezia-go && go build -v -o amneziawg-go); then
+        # Alternative build method if the first one fails
+        log_warning "Standard build failed, trying alternative build method"
+        execute_cmd "cd /opt/amnezia-go && CGO_ENABLED=0 go build -v -o amneziawg-go" "Failed to build AmneziaWG Go"
+    fi
+    
+    # Install binary
     execute_cmd "cp /opt/amnezia-go/amneziawg-go /usr/bin/amneziawg-go"
     execute_cmd "chmod 755 /usr/bin/amneziawg-go"
     
